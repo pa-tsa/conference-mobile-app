@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:PaTsa.Conference.App.Maui.Models"
+             x:Class="PaTsa.Conference.App.Maui.Pages.SchedulePage"
+             Title="Conference Schedule">
+    <CollectionView IsGrouped="True">
+        <CollectionView.GroupHeaderTemplate>
+            <DataTemplate x:DataType="models:ConferenceEventGroupModel">
+                <Label Text="{Binding Name}"
+                       BackgroundColor="LightGray"
+                       FontSize="18"
+                       FontAttributes="Bold" />
+            </DataTemplate>
+        </CollectionView.GroupHeaderTemplate>
+        <CollectionView.ItemsSource>
+            <x:Array Type="{x:Type models:ConferenceEventGroupModel}">
+                <models:ConferenceEventGroupModel Name="Wed April 20th">
+                    <models:ConferenceEventModel EventName="Coding" Location="Evergreen" StartDateTime="2023-04-20 11:00"
+                                                 EndDateTime="2023-04-20 14:00" />
+                    <models:ConferenceEventModel EventName="Off the Grid" Location="Matterhorn"
+                                                 StartDateTime="2023-04-20 14:00" EndDateTime="2023-04-20 17:00" />
+                </models:ConferenceEventGroupModel>
+                <models:ConferenceEventGroupModel Name="Thur April 21st">
+                    <models:ConferenceEventModel EventName="RC Challenge" Location="Matterhorn"
+                                                 StartDateTime="2023-04-21 11:00" EndDateTime="2023-04-21 14:00" />
+                </models:ConferenceEventGroupModel>
+            </x:Array>
+        </CollectionView.ItemsSource>
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="models:ConferenceEventModel">
+                <VerticalStackLayout Padding="10">
+                    <VerticalStackLayout>
+                        <HorizontalStackLayout Spacing="4">
+                            <Label Text="{Binding EventName}" FontAttributes="Bold" />
+                            <Label>
+                                <Label.Text>
+                                    <MultiBinding StringFormat="{}{0:h:mmtt} - {1:h:mmtt}">
+                                        <Binding Path="StartDateTime" />
+                                        <Binding Path="EndDateTime" />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                        </HorizontalStackLayout>
+                        <Label Text="{Binding Location}"/>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>
