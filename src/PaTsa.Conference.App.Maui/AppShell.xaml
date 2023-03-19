@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Shell
+    x:Class="PaTsa.Conference.App.Maui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:PaTsa.Conference.App.Maui.Pages"
+    Shell.FlyoutBehavior="Disabled">
+
+    <TabBar>
+        <Tab Icon="house.png" Title="Home">
+            <ShellContent
+                Title="2023 State Conference"
+                ContentTemplate="{DataTemplate pages:MainPage}"
+                Route="MainPage" />
+        </Tab>
+        <Tab Icon="calendar.png" Title="Schedule">
+            <ShellContent
+                Title="Conference Schedule"
+                ContentTemplate="{DataTemplate pages:SchedulePage}"
+                Route="SchedulePage" />
+        </Tab>
+        <Tab Icon="bell.png" Title="Notifications">
+            <ShellContent
+                Title="Notifications"
+                ContentTemplate="{DataTemplate pages:NotificationsPage}"
+                Route="NotificationPage" />
+        </Tab>
+        <Tab Title="Map">
+            <ShellContent
+                Title="Map"
+                ContentTemplate="{DataTemplate pages:MapPage}"
+                Route="MapPage" />
+        </Tab>
+    </TabBar>
+
+</Shell>
