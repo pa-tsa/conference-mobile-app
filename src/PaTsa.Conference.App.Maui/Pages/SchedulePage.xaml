@@ -13,62 +13,68 @@
             Command="{Binding GetConferenceEventGroupsCommand}"
             EventName="Appearing" />
     </ContentPage.Behaviors>
-    <CollectionView IsGrouped="True"
-                    ItemsSource="{Binding ConferenceEventGroups}">
-        <CollectionView.GroupHeaderTemplate>
-            <DataTemplate x:DataType="models:ConferenceEventGroupModel">
-                <Label Text="{Binding Name}"
-                       BackgroundColor="#005DAA"
-                       FontSize="18"
-                       FontAttributes="Bold"
-                       TextColor="White" />
-            </DataTemplate>
-        </CollectionView.GroupHeaderTemplate>
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="models:ConferenceEventModel">
-                <Grid Padding="7">
-                    <Frame Padding="15">
-                        <Grid MinimumHeightRequest="72" ColumnSpacing="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="35" />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
+    <VerticalStackLayout>
+        <HorizontalStackLayout HeightRequest="40" Margin="10" Spacing="10" HorizontalOptions="Center">
+            <Button Text="All Events" Style="{StaticResource RedButtonFilled}" WidthRequest="125" />
+            <Button Text="My Favorites" Style="{StaticResource RedButtonOutline}" WidthRequest="125" />
+        </HorizontalStackLayout>
+        <CollectionView IsGrouped="True"
+                        ItemsSource="{Binding ConferenceEventGroups}">
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate x:DataType="models:ConferenceEventGroupModel">
+                    <Label Text="{Binding Name}"
+                           BackgroundColor="#005DAA"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ConferenceEventModel">
+                    <Grid Padding="7">
+                        <Frame Padding="15">
+                            <Grid MinimumHeightRequest="72" ColumnSpacing="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="35" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
 
-                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center">
-                                <Image Source="heart.png"
-                                       HorizontalOptions="Center"
-                                       VerticalOptions="Center" />
+                                <VerticalStackLayout Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center">
+                                    <Image Source="heart.png"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
 
-                                <Label FontAttributes="Bold"
-                                       FontSize="12"
-                                       HorizontalTextAlignment="Center"
-                                       Text="{Binding TypeShortCode}" />
-                            </VerticalStackLayout>
+                                    <Label FontAttributes="Bold"
+                                           FontSize="12"
+                                           HorizontalTextAlignment="Center"
+                                           Text="{Binding TypeShortCode}" />
+                                </VerticalStackLayout>
 
-                            <VerticalStackLayout Grid.Column="1">
-                                <Label FontAttributes="Bold"
-                                       Text="{Binding Name}" />
-                                <Label FontAttributes="Italic" Text="{Binding Description}" />
-                            </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1">
+                                    <Label FontAttributes="Bold"
+                                           Text="{Binding Name}" />
+                                    <Label FontAttributes="Italic" Text="{Binding Description}" />
+                                </VerticalStackLayout>
 
-                            <VerticalStackLayout Grid.Column="2">
-                                <Label HorizontalTextAlignment="End"
-                                       Text="{Binding Path=StartDateTime, StringFormat='{0:dddd}'}" />
-                                <Label HorizontalTextAlignment="End">
-                                    <Label.Text>
-                                        <MultiBinding StringFormat="{}{0:h:mmtt} - {1:h:mmtt}">
-                                            <Binding Path="StartDateTime" />
-                                            <Binding Path="EndDateTime" />
-                                        </MultiBinding>
-                                    </Label.Text>
-                                </Label>
-                                <Label HorizontalTextAlignment="End" Text="{Binding Location}" />
-                            </VerticalStackLayout>
-                        </Grid>
-                    </Frame>
-                </Grid>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+                                <VerticalStackLayout Grid.Column="2">
+                                    <Label HorizontalTextAlignment="End"
+                                           Text="{Binding Path=StartDateTime, StringFormat='{0:dddd}'}" />
+                                    <Label HorizontalTextAlignment="End">
+                                        <Label.Text>
+                                            <MultiBinding StringFormat="{}{0:h:mmtt} - {1:h:mmtt}">
+                                                <Binding Path="StartDateTime" />
+                                                <Binding Path="EndDateTime" />
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
+                                    <Label HorizontalTextAlignment="End" Text="{Binding Location}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
 </ContentPage>

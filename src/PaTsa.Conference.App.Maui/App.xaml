@@ -10,13 +10,39 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Style x:Key="ButtonOutline" TargetType="Button">
-                <!--<Setter Property="Background" Value="{StaticResource LightBackground}"/>-->
+                <Setter Property="Background" Value="White"/>
                 <Setter Property="TextColor" Value="{StaticResource Primary}"/>
                 <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
                 <Setter Property="BorderWidth" Value="2"/>
                 <Setter Property="HeightRequest" Value="40"/>
                 <Setter Property="CornerRadius" Value="20"/>
             </Style>
+            <Style x:Key="ButtonFilled" TargetType="Button">
+                <Setter Property="Background" Value="{StaticResource Primary}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
+                <Setter Property="BorderWidth" Value="2"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="CornerRadius" Value="20"/>
+            </Style>
+
+            <Style x:Key="RedButtonOutline" TargetType="Button">
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="TextColor" Value="{StaticResource Red}"/>
+                <Setter Property="BorderColor" Value="{StaticResource Red}"/>
+                <Setter Property="BorderWidth" Value="2"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="CornerRadius" Value="20"/>
+            </Style>
+            <Style x:Key="RedButtonFilled" TargetType="Button">
+                <Setter Property="Background" Value="#9C1D20"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="BorderColor" Value="#9C1D20"/>
+                <Setter Property="BorderWidth" Value="2"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="CornerRadius" Value="20"/>
+            </Style>
+
             <Style x:Key="CardView" TargetType="Frame">
                 <Setter Property="BorderColor" Value="#DDDDDD"/>
                 <Setter Property="HasShadow" Value="{OnPlatform iOS=false, MacCatalyst=false, Default=true}"/>
