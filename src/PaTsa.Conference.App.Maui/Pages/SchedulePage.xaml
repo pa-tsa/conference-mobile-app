@@ -10,25 +10,19 @@
              Title="{Binding Title}">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
-            Command="{Binding GetConferenceEventGroupsCommand}"
+            Command="{Binding LoadConferenceEventsCommand}"
             EventName="Appearing" />
     </ContentPage.Behaviors>
-    <VerticalStackLayout>
+    <Grid RowDefinitions="auto,*">
         <HorizontalStackLayout HeightRequest="40" Margin="10" Spacing="10" HorizontalOptions="Center">
             <Button Text="All Events" Style="{StaticResource RedButtonFilled}" WidthRequest="125" />
             <Button Text="My Favorites" Style="{StaticResource RedButtonOutline}" WidthRequest="125" />
         </HorizontalStackLayout>
-        <CollectionView IsGrouped="True"
-                        ItemsSource="{Binding ConferenceEventGroups}">
-            <CollectionView.GroupHeaderTemplate>
-                <DataTemplate x:DataType="models:ConferenceEventGroupModel">
-                    <Label Text="{Binding Name}"
-                           BackgroundColor="#005DAA"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           TextColor="White" />
-                </DataTemplate>
-            </CollectionView.GroupHeaderTemplate>
+
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding ConferenceEvents}"
+                        RemainingItemsThreshold="5"
+                        RemainingItemsThresholdReachedCommand="{Binding LoadConferenceEventsCommand}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:ConferenceEventModel">
                     <Grid Padding="7">
@@ -58,13 +52,15 @@
                                 </VerticalStackLayout>
 
                                 <VerticalStackLayout Grid.Column="2">
-                                    <Label HorizontalTextAlignment="End"
-                                           Text="{Binding Path=StartDateTime, StringFormat='{0:dddd}'}" />
+                                    <Label FontAttributes="Bold"
+                                           HorizontalTextAlignment="End"
+                                           Text="{Binding Path=LocalStartDateTime, StringFormat='{0:dddd}'}"
+                                           TextColor="{StaticResource Primary}"/>
                                     <Label HorizontalTextAlignment="End">
                                         <Label.Text>
                                             <MultiBinding StringFormat="{}{0:h:mmtt} - {1:h:mmtt}">
-                                                <Binding Path="StartDateTime" />
-                                                <Binding Path="EndDateTime" />
+                                                <Binding Path="LocalStartDateTime" />
+                                                <Binding Path="LocalEndDateTime" />
                                             </MultiBinding>
                                         </Label.Text>
                                     </Label>
@@ -76,5 +72,12 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Center"
+                           Color="{StaticResource Primary}"
+                           Grid.RowSpan="2" />
+    </Grid>
 </ContentPage>
