@@ -11,17 +11,29 @@ namespace PaTsa.Conference.App.Maui;
 
 public static class MauiProgram
 {
-	public static MauiApp CreateMauiApp()
-	{
-		var builder = MauiApp.CreateBuilder();
-		builder
-			.UseMauiApp<App>()
+    public static MauiApp CreateMauiApp()
+    {
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
-			.ConfigureFonts(fonts =>
-			{
-				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-			});
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("SourceSansPro-Black.ttf");
+                fonts.AddFont("SourceSansPro-BlackItalic.ttf");
+                fonts.AddFont("SourceSansPro-Bold.ttf");
+                fonts.AddFont("SourceSansPro-BoldItalic.ttf");
+                fonts.AddFont("SourceSansPro-ExtraLight.ttf");
+                fonts.AddFont("SourceSansPro-ExtraLightItalic.ttf");
+                fonts.AddFont("SourceSansPro-Italic.ttf");
+                fonts.AddFont("SourceSansPro-Light.ttf");
+                fonts.AddFont("SourceSansPro-LightItalic.ttf");
+                fonts.AddFont("SourceSansPro-Regular.ttf");
+                fonts.AddFont("SourceSansPro-SemiBold.ttf");
+                fonts.AddFont("SourceSansPro-SemiBoldItalic.ttf");
+            });
 
         builder.Services.AddSingleton<ConferenceEventService>();
 
@@ -31,9 +43,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<SchedulePage>();
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
-		return builder.Build();
-	}
+        return builder.Build();
+    }
 }
