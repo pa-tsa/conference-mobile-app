@@ -26,12 +26,6 @@
                 ContentTemplate="{DataTemplate pages:NotificationsPage}"
                 Route="NotificationPage" />
         </Tab>
-        <Tab Title="Map">
-            <ShellContent
-                Title="Map"
-                ContentTemplate="{DataTemplate pages:MapPage}"
-                Route="MapPage" />
-        </Tab>
     </TabBar>
 
 </Shell>
