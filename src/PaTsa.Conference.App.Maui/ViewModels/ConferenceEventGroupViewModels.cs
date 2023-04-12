@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Controls;
 using PaTsa.Conference.App.Maui.Models;
@@ -16,7 +17,14 @@ public partial class ConferenceEventGroupViewModel : BaseViewModel
     private bool _allEventsLoaded;
     private int _pageNumber;
 
-    public ObservableCollection<ConferenceEventModel> ConferenceEvents { get; } = new();
+    [ObservableProperty]
+    private bool _showHighSchoolEvents;
+
+    [ObservableProperty]
+    private bool _showMiddleSchoolEvents;
+
+    [ObservableProperty]
+    private bool _showSpecialInterestsEvents;
 
     public ConferenceEventGroupViewModel(ConferenceEventService conferenceEventService)
     {
@@ -24,6 +32,8 @@ public partial class ConferenceEventGroupViewModel : BaseViewModel
         _pageNumber = 0;
         Title = "Conference Schedule";
     }
+
+    public ObservableCollection<ConferenceEventModel> ConferenceEvents { get; } = new();
 
 
     [RelayCommand]
