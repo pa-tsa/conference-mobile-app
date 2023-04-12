@@ -13,13 +13,47 @@
             Command="{Binding LoadConferenceEventsCommand}"
             EventName="Appearing" />
     </ContentPage.Behaviors>
-    <Grid RowDefinitions="auto,*">
-        <HorizontalStackLayout HeightRequest="40" Margin="10" Spacing="10" HorizontalOptions="Center">
-            <Button Text="All Events" Style="{StaticResource RedButtonFilled}" WidthRequest="125" />
-            <Button Text="My Favorites" Style="{StaticResource RedButtonOutline}" WidthRequest="125" />
+    <Grid RowDefinitions="auto, auto,*">
+        <HorizontalStackLayout HeightRequest="40" Margin="10" Spacing="15" HorizontalOptions="Center">
+            <Button x:Name="FavoriteEventsButton"
+                    Clicked="FavoriteEventsButton_OnClicked"
+                    Style="{StaticResource RedButtonOutline}"
+                    Text="My Favorites"
+                    WidthRequest="125" />
+            <Button x:Name="AllEventsButton"
+                    Clicked="AllEventsButton_OnClicked"
+                    Style="{StaticResource RedButtonFilled}"
+                    Text="All Events"
+                    WidthRequest="125" />
+            <ImageButton x:Name="EventsFilterButton"
+                         Clicked="EventsFilterButton_OnClicked"
+                         HorizontalOptions="Center"
+                         Source="filter_edit.png"
+                         VerticalOptions="Center"
+                         WidthRequest="40"/>
         </HorizontalStackLayout>
 
-        <CollectionView Grid.Row="1"
+        <VerticalStackLayout x:Name="EventsFilterVerticalStackLayout"
+                             Grid.Row="1"
+                             IsVisible="False">
+            <Label Text="Event Types" FontAttributes="Bold"/>
+            <VerticalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="High School:" VerticalTextAlignment="Center" />
+                    <CheckBox IsChecked="{Binding ShowHighSchoolEvents}" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Middle School:" VerticalTextAlignment="Center" />
+                    <CheckBox IsChecked="{Binding ShowMiddleSchoolEvents}" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Special Interests:" VerticalTextAlignment="Center" />
+                    <CheckBox IsChecked="{Binding ShowSpecialInterestsEvents}" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
+        <CollectionView Grid.Row="2"
                         ItemsSource="{Binding ConferenceEvents}"
                         RemainingItemsThreshold="5"
                         RemainingItemsThresholdReachedCommand="{Binding LoadConferenceEventsCommand}">
