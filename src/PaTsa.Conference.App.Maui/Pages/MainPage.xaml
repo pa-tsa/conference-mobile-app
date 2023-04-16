@@ -24,7 +24,7 @@
                 HorizontalOptions="Center" />
 
             <Label
-                Text="Stat Conference"
+                Text="State Conference"
                 SemanticProperties.HeadingLevel="Level1"
                 FontFamily="SourceSansPro-Black"
                 FontSize="32"
@@ -36,13 +36,6 @@
                 SemanticProperties.HeadingLevel="Level2"
                 FontFamily="SourceSansPro-Light"
                 FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
                 HorizontalOptions="Center" />
 
         </VerticalStackLayout>
