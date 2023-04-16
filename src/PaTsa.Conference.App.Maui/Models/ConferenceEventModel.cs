@@ -10,6 +10,8 @@ public class ConferenceEventModel
 
     public DateTime EndDateTime { get; set; }
 
+    public string EventId { get; set; }
+
     public string Id { get; set; }
 
     public DateTime LocalEndDateTime => EndDateTime.ToLocalTime();
