@@ -15,18 +15,18 @@ public class ConferenceEventService
         _httpClient = new HttpClient();
     }
 
-    private static HttpRequestMessage ConstructGetConferenceEventsRequest(int pageNumber)
+    private static HttpRequestMessage ConstructGetConferenceEventsRequest(string typesFilter, int pageNumber)
     {
         var httpRequestMessage = new HttpRequestMessage(
             HttpMethod.Get,
-            $"https://pa-tsa-conference-app-api-app.azurewebsites.net/api/ConferenceEvents?pageNumber={pageNumber}&pageSize=20");
+            $"https://pa-tsa-conference-app-api-app.azurewebsites.net/api/ConferenceEvents?types={typesFilter}&pageNumber={pageNumber}&pageSize=20");
 
         return httpRequestMessage;
     }
 
-    public async Task<List<ConferenceEventModel>> GetConferenceEvents(int pageNumber)
+    public async Task<List<ConferenceEventModel>> GetConferenceEvents(string typesFilter, int pageNumber)
     {
-        var httpResponseMessage = await _httpClient.SendAsync(ConstructGetConferenceEventsRequest(pageNumber));
+        var httpResponseMessage = await _httpClient.SendAsync(ConstructGetConferenceEventsRequest(typesFilter, pageNumber));
 
         if (!httpResponseMessage.IsSuccessStatusCode) return new List<ConferenceEventModel>();
 
