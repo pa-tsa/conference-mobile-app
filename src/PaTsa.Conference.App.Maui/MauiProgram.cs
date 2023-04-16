@@ -37,7 +37,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<ConferenceEventService>();
 
-        builder.Services.AddSingleton<ConferenceEventGroupViewModel>();
+        builder.Services.AddSingleton<ScheduleViewModel>();
 
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<SchedulePage>();

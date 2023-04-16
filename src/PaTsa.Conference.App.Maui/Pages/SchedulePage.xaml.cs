@@ -6,10 +6,10 @@ namespace PaTsa.Conference.App.Maui.Pages;
 
 public partial class SchedulePage
 {
-    public SchedulePage(ConferenceEventGroupViewModel conferenceEventGroupViewModel)
+    public SchedulePage(ScheduleViewModel scheduleViewModel)
     {
         InitializeComponent();
-        BindingContext = conferenceEventGroupViewModel;
+        BindingContext = scheduleViewModel;
     }
 
     private void AllEventsButton_OnClicked(object sender, EventArgs e)

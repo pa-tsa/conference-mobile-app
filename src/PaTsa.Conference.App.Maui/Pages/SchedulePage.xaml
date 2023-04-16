@@ -6,7 +6,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewModels="clr-namespace:PaTsa.Conference.App.Maui.ViewModels"
              x:Class="PaTsa.Conference.App.Maui.Pages.SchedulePage"
-             x:DataType="viewModels:ConferenceEventGroupViewModel"
+             x:DataType="viewModels:ScheduleViewModel"
              Title="{Binding Title}">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
@@ -114,7 +114,7 @@
                                                      VerticalOptions="Center">
 
                                     <ImageButton
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ConferenceEventGroupViewModel}}, Path=FavoriteConferenceEventCommand}"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ScheduleViewModel}}, Path=FavoriteConferenceEventCommand}"
                                         CommandParameter="{Binding EventId}"
                                         HorizontalOptions="Center"
                                         MaximumHeightRequest="20"

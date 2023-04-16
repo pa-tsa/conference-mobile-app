@@ -12,7 +12,7 @@ using PaTsa.Conference.App.Maui.Services;
 
 namespace PaTsa.Conference.App.Maui.ViewModels;
 
-public partial class ConferenceEventGroupViewModel : BaseViewModel
+public partial class ScheduleViewModel : BaseViewModel
 {
     private readonly ConferenceEventService _conferenceEventService;
     private readonly List<string> _favoriteEventsList;
@@ -29,7 +29,7 @@ public partial class ConferenceEventGroupViewModel : BaseViewModel
 
     public ObservableCollection<ConferenceEventModel> ConferenceEvents { get; } = new();
 
-    public ConferenceEventGroupViewModel(ConferenceEventService conferenceEventService)
+    public ScheduleViewModel(ConferenceEventService conferenceEventService)
     {
         _conferenceEventService = conferenceEventService;
         //TODO: Load from local config
