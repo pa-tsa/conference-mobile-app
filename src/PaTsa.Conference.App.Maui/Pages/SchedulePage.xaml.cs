@@ -31,6 +31,16 @@ public partial class SchedulePage
 
     private void EventsFilterButton_OnClicked(object sender, EventArgs e)
     {
+        ShowHideEventsFilter();
+    }
+
+    private void FilterEventsButton_OnClicked(object sender, EventArgs e)
+    {
+        ShowHideEventsFilter();
+    }
+
+    private void ShowHideEventsFilter()
+    {
         EventsFilterVerticalStackLayout.IsVisible = !EventsFilterVerticalStackLayout.IsVisible;
     }
 }

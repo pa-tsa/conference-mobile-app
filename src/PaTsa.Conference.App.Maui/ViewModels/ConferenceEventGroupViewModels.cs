@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -14,30 +15,106 @@ namespace PaTsa.Conference.App.Maui.ViewModels;
 public partial class ConferenceEventGroupViewModel : BaseViewModel
 {
     private readonly ConferenceEventService _conferenceEventService;
+    private readonly List<string> _favoriteEventsList;
     private bool _allEventsLoaded;
     private int _pageNumber;
 
-    [ObservableProperty]
-    private bool _showHighSchoolEvents;
+    private bool _showFavoritesOnly;
 
-    [ObservableProperty]
-    private bool _showMiddleSchoolEvents;
+    [ObservableProperty]private bool _showHighSchoolEvents;
 
-    [ObservableProperty]
-    private bool _showSpecialInterestsEvents;
+    [ObservableProperty]private bool _showMiddleSchoolEvents;
+
+    [ObservableProperty]private bool _showSpecialInterestsEvents;
+
+    public ObservableCollection<ConferenceEventModel> ConferenceEvents { get; } = new();
 
     public ConferenceEventGroupViewModel(ConferenceEventService conferenceEventService)
     {
         _conferenceEventService = conferenceEventService;
+        //TODO: Load from local config
+        _favoriteEventsList = new List<string>();
         _pageNumber = 0;
         Title = "Conference Schedule";
+
+        //TODO: Load from local config
+        _showFavoritesOnly = false;
+        _showHighSchoolEvents = true;
+        _showMiddleSchoolEvents = true;
+        _showSpecialInterestsEvents = true;
     }
 
-    public ObservableCollection<ConferenceEventModel> ConferenceEvents { get; } = new();
+    private string BuildTypesFilter()
+    {
+        var typesList = new List<string>();
 
+        if (ShowHighSchoolEvents) typesList.Add("High School");
+
+        if (ShowMiddleSchoolEvents) typesList.Add("Middle School");
+
+        if (ShowSpecialInterestsEvents) typesList.Add("Special Interest");
+
+        return typesList.Any()
+            ? string.Join(',', typesList)
+            : string.Empty;
+    }
 
     [RelayCommand]
-    private async Task LoadConferenceEventsAsync()
+    private void FavoriteConferenceEvent(string eventName)
+    {
+        if (_favoriteEventsList.Contains(eventName))
+            _favoriteEventsList.Remove(eventName);
+        else
+            _favoriteEventsList.Add(eventName);
+    }
+
+    private async Task FetchConferenceEvents()
+    {
+        var typesFilter = BuildTypesFilter();
+
+        var conferenceEventModels = await _conferenceEventService.GetConferenceEvents(typesFilter, _pageNumber);
+
+        if (conferenceEventModels.Any())
+        {
+            if (_showFavoritesOnly) conferenceEventModels = conferenceEventModels.Where(_ => _favoriteEventsList.Contains(_.EventId)).ToList();
+
+            conferenceEventModels.ForEach(ConferenceEvents.Add);
+        }
+        else
+        {
+            _allEventsLoaded = true;
+        }
+    }
+
+    [RelayCommand]
+    private async Task FilterConferenceEventsAsync()
+    {
+        if (IsBusy) return;
+
+        try
+        {
+            IsBusy = true;
+
+            ConferenceEvents.Clear();
+
+            _allEventsLoaded = false;
+            _pageNumber = 1;
+
+            await FetchConferenceEvents();
+        }
+        catch (Exception exception)
+        {
+            Debug.WriteLine($"Unable to get conference events: {exception.Message}");
+            await Shell.Current.DisplayAlert("Error!", exception.Message, "OK");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task LoadConferenceEventsPageAsync()
     {
         if (IsBusy || _allEventsLoaded) return;
 
@@ -47,12 +124,39 @@ public partial class ConferenceEventGroupViewModel : BaseViewModel
 
             _pageNumber++;
 
-            var conferenceEventModels = await _conferenceEventService.GetConferenceEvents(_pageNumber);
+            await FetchConferenceEvents();
+        }
+        catch (Exception exception)
+        {
+            Debug.WriteLine($"Unable to get conference events: {exception.Message}");
+            await Shell.Current.DisplayAlert("Error!", exception.Message, "OK");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
 
-            if (conferenceEventModels.Any())
-                conferenceEventModels.ForEach(ConferenceEvents.Add);
-            else
-                _allEventsLoaded = true;
+    [RelayCommand]
+    private async Task ShowFavoriteConferenceEventsAsync()
+    {
+        if (IsBusy) return;
+
+        try
+        {
+            IsBusy = true;
+
+            ConferenceEvents.Clear();
+
+            _allEventsLoaded = false;
+            _pageNumber = 1;
+            _showFavoritesOnly = true;
+
+            ShowHighSchoolEvents = true;
+            ShowMiddleSchoolEvents = true;
+            ShowSpecialInterestsEvents = true;
+
+            await FetchConferenceEvents();
         }
         catch (Exception exception)
         {
