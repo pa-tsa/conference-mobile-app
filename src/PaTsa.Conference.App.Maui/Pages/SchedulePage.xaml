@@ -10,13 +10,12 @@
              Title="{Binding Title}">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
-            Command="{Binding LoadConferenceEventsPageCommand}"
+            Command="{Binding InitialLoadOfConferenceEventsCommand}"
             EventName="Appearing" />
     </ContentPage.Behaviors>
     <Grid RowDefinitions="auto, auto,*">
         <HorizontalStackLayout HeightRequest="40" Margin="10" Spacing="15" HorizontalOptions="Center">
             <Button x:Name="FavoriteEventsButton"
-                    Command="{Binding ShowFavoriteConferenceEventsCommand}"
                     Clicked="FavoriteEventsButton_OnClicked"
                     Style="{StaticResource RedButtonOutline}"
                     Text="My Favorites"
@@ -113,13 +112,14 @@
                                                      Spacing="10"
                                                      VerticalOptions="Center">
 
-                                    <ImageButton
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ScheduleViewModel}}, Path=FavoriteConferenceEventCommand}"
-                                        CommandParameter="{Binding EventId}"
-                                        HorizontalOptions="Center"
-                                        MaximumHeightRequest="20"
-                                        Source="heart.png"
-                                        VerticalOptions="Center" />
+                                    <ImageButton x:Name="FavoriteImageButton"
+                                                 Clicked="FavoriteImageButton_OnClicked"
+                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ScheduleViewModel}}, Path=FavoriteConferenceEventCommand}"
+                                                 CommandParameter="{Binding EventId}"
+                                                 HorizontalOptions="Center"
+                                                 MaximumHeightRequest="20"
+                                                 Source="{Binding FavoriteImage}"
+                                                 VerticalOptions="Center" />
 
                                     <Label FontAttributes="Bold"
                                            FontSize="12"
