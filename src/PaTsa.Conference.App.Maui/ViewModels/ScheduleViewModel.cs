@@ -14,9 +14,9 @@ namespace PaTsa.Conference.App.Maui.ViewModels;
 
 public partial class ScheduleViewModel : BaseViewModel
 {
+    private bool _allEventsLoaded;
     private readonly ConferenceEventService _conferenceEventService;
     private readonly List<string> _favoriteEventsList;
-    private bool _allEventsLoaded;
     private int _pageNumber;
 
     private bool _showFavoritesOnly;
@@ -26,6 +26,8 @@ public partial class ScheduleViewModel : BaseViewModel
     [ObservableProperty]private bool _showMiddleSchoolEvents;
 
     [ObservableProperty]private bool _showSpecialInterestsEvents;
+
+    public bool ShowFavoritesOnly => _showFavoritesOnly;
 
     public ObservableCollection<ConferenceEventModel> ConferenceEvents { get; } = new();
 
@@ -44,7 +46,7 @@ public partial class ScheduleViewModel : BaseViewModel
         _showSpecialInterestsEvents = true;
     }
 
-    private string BuildTypesFilter()
+    private List<string> BuildTypesFilter()
     {
         var typesList = new List<string>();
 
@@ -54,36 +56,45 @@ public partial class ScheduleViewModel : BaseViewModel
 
         if (ShowSpecialInterestsEvents) typesList.Add("Special Interest");
 
-        return typesList.Any()
-            ? string.Join(',', typesList)
-            : string.Empty;
+        return typesList;
     }
 
     [RelayCommand]
     private void FavoriteConferenceEvent(string eventName)
     {
+        bool isFavorite;
         if (_favoriteEventsList.Contains(eventName))
+        {
+            isFavorite = false;
             _favoriteEventsList.Remove(eventName);
+        }
         else
+        {
+            isFavorite = true;
             _favoriteEventsList.Add(eventName);
+        }
+
+        foreach (var conferenceEventModel in ConferenceEvents.Where(_=>_.EventId == eventName))
+        {
+            conferenceEventModel.IsFavorite = isFavorite;
+        }
     }
 
     private async Task FetchConferenceEvents()
     {
-        var typesFilter = BuildTypesFilter();
-
-        var conferenceEventModels = await _conferenceEventService.GetConferenceEvents(typesFilter, _pageNumber);
+        var conferenceEventModels = await _conferenceEventService.GetConferenceEvents(
+            _showFavoritesOnly ? _favoriteEventsList : new List<string>(0),
+            BuildTypesFilter(),
+            _pageNumber);
 
         if (conferenceEventModels.Any())
         {
-            if (_showFavoritesOnly) conferenceEventModels = conferenceEventModels.Where(_ => _favoriteEventsList.Contains(_.EventId)).ToList();
-
+            conferenceEventModels.ForEach(_=> _.IsFavorite = _favoriteEventsList.Contains(_.EventId));
             conferenceEventModels.ForEach(ConferenceEvents.Add);
         }
-        else
-        {
+
+        if (conferenceEventModels.Count < ConferenceEventService.PageSize)
             _allEventsLoaded = true;
-        }
     }
 
     [RelayCommand]
@@ -114,7 +125,7 @@ public partial class ScheduleViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async Task LoadConferenceEventsPageAsync()
+    private async Task InitialLoadOfConferenceEventsAsync()
     {
         if (IsBusy || _allEventsLoaded) return;
 
@@ -123,6 +134,59 @@ public partial class ScheduleViewModel : BaseViewModel
             IsBusy = true;
 
             _pageNumber++;
+
+            await FetchConferenceEvents();
+        }
+        catch (Exception exception)
+        {
+            Debug.WriteLine($"Unable to get conference events: {exception.Message}");
+            await Shell.Current.DisplayAlert("Error!", exception.Message, "OK");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task LoadConferenceEventsPageAsync()
+    {
+        if (IsBusy || _allEventsLoaded) return;
+
+        try
+        {
+            IsBusy = true;
+
+            //TODO: Figure out what to display
+            _pageNumber = 1;
+
+            await FetchConferenceEvents();
+        }
+        catch (Exception exception)
+        {
+            Debug.WriteLine($"Unable to get conference events: {exception.Message}");
+            await Shell.Current.DisplayAlert("Error!", exception.Message, "OK");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task ShowAllConferenceEventsAsync()
+    {
+        if (IsBusy) return;
+
+        try
+        {
+            IsBusy = true;
+
+            ConferenceEvents.Clear();
+
+            _allEventsLoaded = false;
+            _pageNumber = 1;
+            _showFavoritesOnly = false;
 
             await FetchConferenceEvents();
         }
