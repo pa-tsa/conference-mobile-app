@@ -12,7 +12,11 @@ public class ConferenceEventModel
 
     public string EventId { get; set; }
 
+    public string FavoriteImage => IsFavorite ? "heart_fill.png" : "heart.png";
+
     public string Id { get; set; }
+
+    public bool IsFavorite { get; set; }
 
     public DateTime LocalEndDateTime => EndDateTime.ToLocalTime();
 
