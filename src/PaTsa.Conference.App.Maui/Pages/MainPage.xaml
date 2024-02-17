@@ -9,30 +9,33 @@
             Padding="30,0"
             VerticalOptions="Center">
 
+            <Label
+                Text="2023"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                FontFamily="SourceSansPro-Black"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center"/>
+
             <Image
                 Source="pa_tsa_logo.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                SemanticProperties.Description="Pennsylvania Technology Students Association"
                 HeightRequest="200"
                 HorizontalOptions="Center" />
 
             <Label
-                Text="Hello, World!"
+                Text="State Conference"
                 SemanticProperties.HeadingLevel="Level1"
+                FontFamily="SourceSansPro-Black"
                 FontSize="32"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center"/>
 
             <Label
-                Text="Welcome to .NET Multi-platform App UI"
+                Text="April 19th-22nd"
                 SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                FontFamily="SourceSansPro-Light"
                 FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
                 HorizontalOptions="Center" />
 
         </VerticalStackLayout>

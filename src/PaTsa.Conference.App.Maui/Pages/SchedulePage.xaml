@@ -4,71 +4,162 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:PaTsa.Conference.App.Maui.Models"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:viewmodels="clr-namespace:PaTsa.Conference.App.Maui.ViewModels"
+             xmlns:viewModels="clr-namespace:PaTsa.Conference.App.Maui.ViewModels"
              x:Class="PaTsa.Conference.App.Maui.Pages.SchedulePage"
-             x:DataType="viewmodels:ConferenceEventGroupViewModel"
+             x:DataType="viewModels:ScheduleViewModel"
              Title="{Binding Title}">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
-            Command="{Binding GetConferenceEventGroupsCommand}"
+            Command="{Binding InitialLoadOfConferenceEventsCommand}"
             EventName="Appearing" />
     </ContentPage.Behaviors>
-    <CollectionView IsGrouped="True"
-                    ItemsSource="{Binding ConferenceEventGroups}">
-        <CollectionView.GroupHeaderTemplate>
-            <DataTemplate x:DataType="models:ConferenceEventGroupModel">
-                <Label Text="{Binding Name}"
-                       BackgroundColor="#005DAA"
-                       FontSize="18"
-                       FontAttributes="Bold"
-                       TextColor="White" />
-            </DataTemplate>
-        </CollectionView.GroupHeaderTemplate>
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="models:ConferenceEventModel">
-                <Grid Padding="7">
-                    <Frame Padding="15">
-                        <Grid MinimumHeightRequest="72" ColumnSpacing="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="35" />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
+    <Grid RowDefinitions="auto, auto,*">
+        <HorizontalStackLayout HeightRequest="40" Margin="10" Spacing="15" HorizontalOptions="Center">
+            <Button x:Name="FavoriteEventsButton"
+                    Clicked="FavoriteEventsButton_OnClicked"
+                    Style="{StaticResource RedButtonOutline}"
+                    Text="My Favorites"
+                    WidthRequest="125" />
+            <Button x:Name="AllEventsButton"
+                    Clicked="AllEventsButton_OnClicked"
+                    Style="{StaticResource RedButtonFilled}"
+                    Text="All Events"
+                    WidthRequest="125" />
+            <ImageButton x:Name="EventsFilterButton"
+                         Clicked="EventsFilterButton_OnClicked"
+                         HorizontalOptions="Center"
+                         Source="filter_edit.png"
+                         VerticalOptions="Center"
+                         WidthRequest="40" />
+        </HorizontalStackLayout>
 
-                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center">
-                                <Image Source="heart.png"
-                                       HorizontalOptions="Center"
-                                       VerticalOptions="Center" />
+        <VerticalStackLayout x:Name="EventsFilterVerticalStackLayout"
+                             Grid.Row="1"
+                             IsVisible="False">
+            <Label Text="Event Types" FontAttributes="Bold" />
+            <Border Stroke="#000"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 5,5,5,5">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
 
-                                <Label FontAttributes="Bold"
-                                       FontSize="12"
-                                       HorizontalTextAlignment="Center"
-                                       Text="{Binding TypeShortCode}" />
-                            </VerticalStackLayout>
+                    <Label Grid.Column="0"
+                           Grid.Row="0"
+                           Text="High School:"
+                           VerticalTextAlignment="Center" />
+                    <CheckBox Grid.Column="1"
+                              Grid.Row="0"
+                              IsChecked="{Binding ShowHighSchoolEvents}"
+                              VerticalOptions="Center" />
 
-                            <VerticalStackLayout Grid.Column="1">
-                                <Label FontAttributes="Bold"
-                                       Text="{Binding Name}" />
-                                <Label FontAttributes="Italic" Text="{Binding Description}" />
-                            </VerticalStackLayout>
+                    <Label Grid.Column="0"
+                           Grid.Row="1"
+                           Text="Middle School:"
+                           VerticalTextAlignment="Center" />
+                    <CheckBox Grid.Column="1"
+                              Grid.Row="1"
+                              IsChecked="{Binding ShowMiddleSchoolEvents}"
+                              VerticalOptions="Center" />
 
-                            <VerticalStackLayout Grid.Column="2">
-                                <Label HorizontalTextAlignment="End"
-                                       Text="{Binding Path=StartDateTime, StringFormat='{0:dddd}'}" />
-                                <Label HorizontalTextAlignment="End">
-                                    <Label.Text>
-                                        <MultiBinding StringFormat="{}{0:h:mmtt} - {1:h:mmtt}">
-                                            <Binding Path="StartDateTime" />
-                                            <Binding Path="EndDateTime" />
-                                        </MultiBinding>
-                                    </Label.Text>
-                                </Label>
-                                <Label HorizontalTextAlignment="End" Text="{Binding Location}" />
-                            </VerticalStackLayout>
-                        </Grid>
-                    </Frame>
+                    <Label Grid.Column="0"
+                           Grid.Row="2"
+                           Text="Special Interests:"
+                           VerticalTextAlignment="Center" />
+                    <CheckBox Grid.Column="1"
+                              Grid.Row="2"
+                              IsChecked="{Binding ShowSpecialInterestsEvents}"
+                              VerticalOptions="Center" />
+
+                    <Button x:Name="FilterEventsButton"
+                            Clicked="FilterEventsButton_OnClicked"
+                            Command="{Binding FilterConferenceEventsCommand}"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="3"
+                            Text="Filter Events"
+                            WidthRequest="125" />
+
                 </Grid>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+            </Border>
+        </VerticalStackLayout>
+
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding ConferenceEvents}"
+                        RemainingItemsThreshold="5"
+                        RemainingItemsThresholdReachedCommand="{Binding LoadConferenceEventsPageCommand}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ConferenceEventModel">
+                    <Grid Padding="7">
+                        <Frame Padding="15">
+                            <Grid MinimumHeightRequest="72" ColumnSpacing="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="35" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <VerticalStackLayout Grid.Column="0"
+                                                     HorizontalOptions="Start"
+                                                     Spacing="10"
+                                                     VerticalOptions="Center">
+
+                                    <ImageButton x:Name="FavoriteImageButton"
+                                                 Clicked="FavoriteImageButton_OnClicked"
+                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ScheduleViewModel}}, Path=FavoriteConferenceEventCommand}"
+                                                 CommandParameter="{Binding EventId}"
+                                                 HorizontalOptions="Center"
+                                                 MaximumHeightRequest="20"
+                                                 Source="{Binding FavoriteImage}"
+                                                 VerticalOptions="Center" />
+
+                                    <Label FontAttributes="Bold"
+                                           FontSize="12"
+                                           HorizontalTextAlignment="Center"
+                                           Text="{Binding TypeShortCode}" />
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Grid.Column="1">
+                                    <Label FontAttributes="Bold"
+                                           Text="{Binding Name}" />
+                                    <Label FontAttributes="Italic" Text="{Binding Description}" />
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Grid.Column="2">
+                                    <Label FontAttributes="Bold"
+                                           HorizontalTextAlignment="End"
+                                           Text="{Binding Path=LocalStartDateTime, StringFormat='{0:dddd}'}"
+                                           TextColor="{StaticResource Primary}" />
+                                    <Label HorizontalTextAlignment="End">
+                                        <Label.Text>
+                                            <MultiBinding StringFormat="{}{0:h:mmtt} - {1:h:mmtt}">
+                                                <Binding Path="LocalStartDateTime" />
+                                                <Binding Path="LocalEndDateTime" />
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
+                                    <Label HorizontalTextAlignment="End" Text="{Binding Location}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Center"
+                           Color="{StaticResource Primary}"
+                           Grid.RowSpan="3" />
+    </Grid>
 </ContentPage>

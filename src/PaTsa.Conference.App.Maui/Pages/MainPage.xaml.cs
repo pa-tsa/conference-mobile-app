@@ -1,28 +1,9 @@
-﻿using System;
-using Microsoft.Maui.Accessibility;
-using Microsoft.Maui.Controls;
+﻿namespace PaTsa.Conference.App.Maui.Pages;
 
-namespace PaTsa.Conference.App.Maui.Pages;
-
-public partial class MainPage : ContentPage
+public partial class MainPage
 {
-	int count = 0;
-
-	public MainPage()
-	{
-		InitializeComponent();
-	}
-
-	private void OnCounterClicked(object sender, EventArgs e)
-	{
-		count++;
-
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
-
-		SemanticScreenReader.Announce(CounterBtn.Text);
-	}
+    public MainPage()
+    {
+        InitializeComponent();
+    }
 }
-
