@@ -10,7 +10,7 @@
             VerticalOptions="Center">
 
             <Label
-                Text="2023"
+                Text="2024"
                 SemanticProperties.HeadingLevel="Level1"
                 FontSize="32"
                 FontFamily="SourceSansPro-Black"
@@ -32,7 +32,7 @@
                 HorizontalTextAlignment="Center"/>
 
             <Label
-                Text="April 19th-22nd"
+                Text="April 17th-20th"
                 SemanticProperties.HeadingLevel="Level2"
                 FontFamily="SourceSansPro-Light"
                 FontSize="18"
