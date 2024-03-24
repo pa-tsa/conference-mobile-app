@@ -15,7 +15,7 @@
 		<ApplicationTitle>PA TSA Conference</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.patsa.conference.app.maui</ApplicationId>
+		<ApplicationId>com.patsa.conference.app.maui</ApplicationId>
 		<ApplicationIdGuid>d49769d5-b7f9-4c5e-8ce6-7566688db9f0</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -51,8 +51,8 @@
 		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-    	<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.7" />
-    	<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.7" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.7" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.7" />
 	</ItemGroup>
 
 	<ItemGroup>
